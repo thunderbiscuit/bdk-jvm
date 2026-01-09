@@ -1,0 +1,45 @@
+name: Test Regtest Container
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-regtest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pull and start the regtest container
+        run: |
+          docker pull ghcr.io/thunderbiscuit/podman-regtest-infinity-pro:0.1.1
+          docker run -d --name regtest \
+            -p 18443:18443 \
+            -p 3002:3002 \
+            ghcr.io/thunderbiscuit/podman-regtest-infinity-pro:0.1.1
+
+      - name: Wait for services to be ready
+        run: |
+          echo "Waiting for services..."
+          sleep 15
+          timeout 60 bash -c 'until curl -s http://localhost:3002/blocks/tip/height; do sleep 2; done'
+
+      - name: Mine 2 blocks
+        run: |
+          COOKIE=$(docker exec regtest cat /root/.bitcoin/regtest/.cookie | cut -d ':' -f2)
+          docker exec regtest bitcoin-cli \
+            --chain=regtest \
+            --rpcuser=__cookie__ \
+            --rpcpassword=$COOKIE 
+            generatetoaddress 2 bcrt1q6gau5mg4ceupfhtyywyaj5ge45vgptvawgg3aq
+
+      - name: Print network info
+        run: |
+          COOKIE=$(docker exec regtest cat /root/.bitcoin/regtest/.cookie | cut -d ':' -f2)
+          docker exec regtest bitcoin-cli \
+            --chain=regtest \
+            --rpcuser=__cookie__ \
+            --rpcpassword="$COOKIE" \
+            getnetworkinfo
+
+      - name: Cleanup
+        if: always()
+        run: docker stop regtest && docker rm regtest
