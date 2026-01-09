@@ -28,7 +28,7 @@ jobs:
           docker exec regtest bitcoin-cli \
             --chain=regtest \
             --rpcuser=__cookie__ \
-            --rpcpassword=$COOKIE 
+            --rpcpassword=$COOKIE \
             generatetoaddress 2 bcrt1q6gau5mg4ceupfhtyywyaj5ge45vgptvawgg3aq
 
       - name: Print network info
