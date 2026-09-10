@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "org.bitcoindevkit"
-version = "3.0.0-SNAPSHOT"
+version = "3.2.0-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
