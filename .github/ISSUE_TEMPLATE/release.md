@@ -4,6 +4,8 @@ about: "Create a new release [for release managers only]"
 title: "Release MAJOR.MINOR.PATCH"
 ---
 
+## Todo list for publishing the release
+
 - [ ] Bump the bdk-ffi submodule to the release tag in bdk-ffi.
 - [ ] Delete the `target` directory in bdk-ffi and the `build` directory in `lib` to make sure you're building the library from scratch without any caches.
 - [ ] Build the library.
@@ -22,9 +24,9 @@ just test
 - [ ] Create the tag for the release and make sure to add a link to the bdk-ffi changelog to the tag. Push the tag to GitHub. An example of the tag message would be:
 
 ```md
-Release 2.2.0
+Release 3.0.0
 
-For information on this release, see the bdk-ffi repository and [our release notes for the 2.2.0 release](https://github.com/bitcoindevkit/bdk-ffi/releases/tag/v2.2.0) as well as our [Changelog](https://github.com/bitcoindevkit/bdk-ffi/blob/master/CHANGELOG.md).
+For details on this release, see the bdk-ffi repository and [our release notes for the 3.0.0 release](https://github.com/bitcoindevkit/bdk-ffi/releases/tag/v3.0.0) as well as our [Changelog](https://github.com/bitcoindevkit/bdk-ffi/blob/master/CHANGELOG.md).
 ```
 
 ```shell
@@ -36,6 +38,6 @@ git push upstream v2.3.0
 - [ ] Build release artifacts through the workflow dispatch with the new tag (`build.yml`)
 - [ ] Add the platform-specific binaries to the `resources/` directory
 - [ ] Publish the release to Maven Central.
+- [ ] Go to https://javadoc.io/versions/org.bitcoindevkit/bdk-jvm and download the latest version of the API docs, which will publish them at https://javadoc.io/doc/org.bitcoindevkit/bdk-jvm/latest/index.html.
 - [ ] Bump the version on `master` while keeping the `SNAPSHOT` suffix, e.g., from `1.1.0-SNAPSHOT` to `1.2.0-SNAPSHOT`.
 - [ ] Update this release workflow if necessary.
-- [ ] Trigger the release of the new API docs (use workflow dispatch on the `deploy-docs.yml` action with the newly released tag). This will publish them automatically to https://bitcoindevkit.github.io/bdk-jvm/.
